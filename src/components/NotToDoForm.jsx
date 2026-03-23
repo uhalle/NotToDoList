@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function NoToDoForm({ addItem }) {
+function NotToDoForm({ addItem }) {
   const [text, setText] = useState("");
 
   const handleSubmit = (e) => {
@@ -23,4 +23,4 @@ function NoToDoForm({ addItem }) {
   );
 }
 
-export default NoToDoForm;
+export default NotToDoForm;

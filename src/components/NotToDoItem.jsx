@@ -1,6 +1,6 @@
 import React from "react";
 
-function NoToDoItem({ item, toggleStatus, removeItem }) {
+function NotToDoItem({ item, toggleStatus, removeItem }) {
   return (
     <li>
       <span style={{ textDecoration: item.avoided ? "line-through" : "none" }}>
@@ -14,4 +14,4 @@ function NoToDoItem({ item, toggleStatus, removeItem }) {
   );
 }
 
-export default NoToDoItem;
+export default NotToDoItem;

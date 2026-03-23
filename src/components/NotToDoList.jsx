@@ -1,11 +1,11 @@
 import React from "react";
-import NoToDoItem from "./NoToDoItem";
+import NotToDoItem from "./NotToDoItem";
 
-function NoToDoList({ items, toggleStatus, removeItem }) {
+function NotToDoList({ items, toggleStatus, removeItem }) {
   return (
     <ul>
       {items.map((item) => (
-        <NoToDoItem
+        <NotToDoItem
           key={item.id}
           item={item}
           toggleStatus={toggleStatus}
@@ -16,4 +16,4 @@ function NoToDoList({ items, toggleStatus, removeItem }) {
   );
 }
 
-export default NoToDoList;
+export default NotToDoList;

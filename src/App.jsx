@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import NoToDoForm from "./components/NoToDoForm";
-import NoToDoList from "./components/NoToDoList";
+import NotToDoForm from "./components/NotToDoForm";
+import NotToDoList from "./components/NotToDoList";
 
 function App() {
   const [items, setItems] = useState([]);
@@ -24,8 +24,8 @@ function App() {
   return (
     <div>
       <h1>🚫 Not To Do List</h1>
-      <NoToDoForm addItem={addItem} />
-      <NoToDoList
+      <NotToDoForm addItem={addItem} />
+      <NotToDoList
         items={items}
         toggleStatus={toggleStatus}
         removeItem={removeItem}
