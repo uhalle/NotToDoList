@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import NotToDoForm from "./components/NotToDoForm";
 import NotToDoList from "./components/NotToDoList";
-
+import NotToDoListHistory from "./components/NotToDoListHistory";
 function App() {
   const [items, setItems] = useState([]);
 
@@ -23,6 +23,9 @@ function App() {
 
   return (
     <div>
+      <div>
+        <NotToDoListHistory/>
+      </div>
       <h1>🚫 Not To Do List</h1>
       <NotToDoForm addItem={addItem} />
       <NotToDoList
