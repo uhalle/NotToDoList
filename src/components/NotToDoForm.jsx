@@ -1,25 +1,52 @@
 import React, { useState } from "react";
 
-function NotToDoForm({ addItem }) {
-  const [text, setText] = useState("");
+function NotToDoForm({ addTask }) {
+  const [description, setDescription] = useState("");
+  const [priority, setPriority] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!text.trim()) return;
-    addItem(text);  
-    setText("");
+    if (!description.trim()) return;
+    addTask({description,priority});  
+    setDescription(" ");
+    setPriority("Low")
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+  
+    <div style={{ padding: "20px" }}>
+      <h2>ToDo List</h2>
+     <form onSubmit={handleSubmit}>
       <input
         type="text"
-        placeholder="Enter a habit to avoid..."
-        value={text}
-        onChange={(e) => setText(e.target.value)}
+        placeholder="Task description"
+        value={description}
+        onChange={e => setDescription(e.target.value)}
       />
-      <button type="submit">Add</button>
-    </form>
+       <select value={priority} onChange={e => setPriority(e.target.value)}>
+         <option value="LOW">LOW</option>
+         <option value="MEDIUM">MEDIUM</option>
+         <option value="HIGH">HIGH</option>
+       </select>
+        <button type="submit">Add Task</button>      
+       </form>
+      {
+      /* <ul>
+        {tasks.map(task => (
+          <li key={task.id}>
+            <span
+              style={{
+                textDecoration: task.completed ? "line-through" : "none",
+                marginRight: "10px"
+              }}
+            >
+              {task.description} ({task.priority})
+            </span>
+            <button onClick={() => removeTask(task.id)}>Delete</button>
+          </li>
+        ))}
+      </ul> */}
+    </div>
   );
 }
 

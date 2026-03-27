@@ -2,37 +2,44 @@ import React, { useState } from "react";
 import NotToDoForm from "./components/NotToDoForm";
 import NotToDoList from "./components/NotToDoList";
 import NotToDoListHistory from "./components/NotToDoListHistory";
+import { getTasks, createTask, updateTask, deleteTask } from "./api/taskApi.js";
+
 function App() {
-  const [items, setItems] = useState([]);
+  const [tasks, getTasks] = useState([]);
+  const [description, setDescription] = useState("");
+  const [priority, setPriority] = useState("LOW");
 
-  const addItem = (text) => {
-    setItems([...items, { id: Date.now(), text, avoided: false }]);
+  //  // Load tasks on mount
+  // useEffect(() => {
+  //   getTasks.then(setTasks);
+  // }, []);
+
+  const addTask = ({description, priority}) => {
+    const task = {}
+    createTask({ description, priority})
+      .then(newTask => {
+        setDescription(newTask.description);
+        setPriority(newTask.priority);
+      });
   };
 
-  const toggleStatus = (id) => {
-    setItems(
-      items.map((item) =>
-        item.id === id ? { ...item, avoided: !item.avoided } : item
-      )
-    );
+  const removeTask = (id) => {
+    deleteTask(id).then(() => {
+      setTasks(tasks.filter(t => t.id !== id));
+    });
   };
-
-  const removeItem = (id) => {
-    setItems(items.filter((item) => item.id !== id));
-  };
-
+  
   return (
     <div>
       <div>
         <NotToDoListHistory/>
       </div>
       <h1>🚫 Not To Do List</h1>
-      <NotToDoForm addItem={addItem} />
-      <NotToDoList
-        items={items}
-        toggleStatus={toggleStatus}
-        removeItem={removeItem}
-      />
+      <NotToDoForm addTask={addTask} />
+      {/* <NotToDoList
+        tasks={tasks}
+        removeTask={removeTask}
+      /> */}
     </div>
   );
 }
