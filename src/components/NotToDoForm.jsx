@@ -1,19 +1,20 @@
 import React, { useState } from "react";
+import NotToDoListHistory from "./NotToDoListHistory";
 
 function NotToDoForm({ addTask }) {
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState("");
+  const [gdescription, setGDescription] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!description.trim()) return;
-    addTask({description,priority});  
+    addTask({description,priority}); 
     setDescription(" ");
     setPriority("Low")
   };
 
   return (
-  
     <div style={{ padding: "20px" }}>
       <h2>ToDo List</h2>
      <form onSubmit={handleSubmit}>
@@ -28,6 +29,12 @@ function NotToDoForm({ addTask }) {
          <option value="MEDIUM">MEDIUM</option>
          <option value="HIGH">HIGH</option>
        </select>
+       <input
+        type="text"
+        placeholder="Group name"
+        value={gdescription}
+        onChange={e => setGDescription(e.target.value)}
+      />
         <button type="submit">Add Task</button>      
        </form>
       {

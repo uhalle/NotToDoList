@@ -7,11 +7,13 @@ export async function getTasks() {
 }
 
 // Create a new task
-export async function createTask({description, priority}) {
+export async function createTask({description, priority, userId}) {
+  const user = {id : userId};
+  const group = {id : 1};
   const res = await fetch(BASE_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(description, priority),
+    body: JSON.stringify({description, priority, user, group})
   });
   return res.json();
 }
