@@ -48,8 +48,8 @@ function App() {
       {!user ? ( <div><Login onLogin={handleLogin}/> <SignupPage/> </div>) :
       (<div>
         <NotToDoListHistory description={description} priority={priority} userId={user.userId}/>
-      <h1>🚫 Not To Do List</h1>
-      <NotToDoForm addTask={addTask}/>
+      <h1 style={{display : 'flex',justifyContent : 'left'}}>🚫 Not To Do List</h1>
+      <NotToDoForm addTask={addTask} userId={user.userId}/>
       </div>)}      
     </div>);
 }

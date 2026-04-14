@@ -2,19 +2,20 @@ import React, { useEffect, useState } from "react";
 import NotToDoListHistory from "./NotToDoListHistory";
 import { getGroups, getTasks } from "../api/taskApi";
 
-function NotToDoForm({ addTask }) {
+function NotToDoForm({ addTask, userId }) {
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState("");
   const [gdescription, setGDescription] = useState("");
   const [groups, setGroups] = useState([]);
+  const [selectedGroup, setSelectedGroup] = useState("");
 
   useEffect(()=>{
    getGroups(userId).then((data)=>{
       setGroups(data);
    }).catch(()=>{
-        console.error("Error fetching tasks:", err);
+        console.error("Error fetching groups:", err);
    })
-  });
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,51 +26,48 @@ function NotToDoForm({ addTask }) {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>ToDo List</h2>
-     <form onSubmit={handleSubmit}>
+  <div style={{ display : "flex", justifyContent : "left", minHeight : "100vh", margin : "100 px"}}>
+    <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "15px", maxWidth: "400px" }}>
       <input
         type="text"
         placeholder="Task description"
         value={description}
         onChange={e => setDescription(e.target.value)}
+        style={{ padding: "8px", width: "100%" }}
       />
-       <select value={priority} onChange={e => setPriority(e.target.value)}>
-         <option value="LOW">LOW</option>
-         <option value="MEDIUM">MEDIUM</option>
-         <option value="HIGH">HIGH</option>
-       </select>
-       <Select>
-       {groups.map(group => {
-          <option>{group}</option>
-       })}
-       </Select>
-       <input
+
+      <select
+        value={priority}
+        onChange={e => setPriority(e.target.value)}
+        style={{ padding: "8px", width: "100%" }}
+      >
+        <option value="LOW">LOW</option>
+        <option value="MEDIUM">MEDIUM</option>
+        <option value="HIGH">HIGH</option>
+      </select>
+
+      <select value = {selectedGroup} 
+      onChange={e => setSelectedGroup(e.target.value)} 
+      style={{ padding: "8px", width: "100%" }}>
+        {groups.map(group => (
+          <option key={group.id}>{group.name || group}</option>
+        ))}
+      </select>
+
+      <input
         type="text"
-        placeholder="Group name"
+        placeholder="Only for new group"
         value={gdescription}
         onChange={e => setGDescription(e.target.value)}
+        style={{ padding: "8px", width: "100%" }}
       />
-        <button type="submit">Add Task</button>      
-       </form>
-      {
-      /* <ul>
-        {tasks.map(task => (
-          <li key={task.id}>
-            <span
-              style={{
-                textDecoration: task.completed ? "line-through" : "none",
-                marginRight: "10px"
-              }}
-            >
-              {task.description} ({task.priority})
-            </span>
-            <button onClick={() => removeTask(task.id)}>Delete</button>
-          </li>
-        ))}
-      </ul> */}
-    </div>
+
+      <button type="submit" style={{ padding: "10px", width: "100%" }}>
+        Add Task
+      </button>
+    </form>
+  </div>
   );
-}
+  }
 
 export default NotToDoForm;
