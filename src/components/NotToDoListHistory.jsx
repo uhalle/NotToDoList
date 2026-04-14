@@ -1,12 +1,12 @@
 import {React,useState,useEffect} from "react";
 import { getTasks} from "../api/taskApi.js";
 
-const NotToDoListHistory = ({description, priority}) => {
+const NotToDoListHistory = ({description, priority, userId}) => {
 
   const [notToDoItems, setNotToDoItems] = useState([]);
   // Sample data for the not-to-do list
   useEffect(() => {
-    getTasks()
+    getTasks(userId)
       .then(data => {
         setNotToDoItems([...data, { description, priority }]);     
        })

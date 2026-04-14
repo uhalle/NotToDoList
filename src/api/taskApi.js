@@ -1,8 +1,17 @@
+const TASKS_URL = "http://localhost:8080/tasks/byUserAndGroup";
 const BASE_URL = "http://localhost:8080/tasks";
+const GROUPS_URL = "http://localhost:8080/groups";
 
 // Fetch all tasks
-export async function getTasks() {
-  const res = await fetch(BASE_URL);
+export async function getTasks(userId) {
+  const TASKS_FINAL_URL = `${TASKS_URL}/${userId}/${1}`;
+  const res = await fetch(TASKS_FINAL_URL);
+  return res.json();
+}
+
+export async function getGroups(userId) {
+  const GROUPS_FINAL_URL = `${GROUPS_URL}/${userId}`;
+  const res = await fetch(GROUPS_FINAL_URL);
   return res.json();
 }
 

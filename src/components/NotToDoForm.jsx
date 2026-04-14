@@ -1,10 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NotToDoListHistory from "./NotToDoListHistory";
+import { getGroups, getTasks } from "../api/taskApi";
 
 function NotToDoForm({ addTask }) {
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState("");
   const [gdescription, setGDescription] = useState("");
+  const [groups, setGroups] = useState([]);
+
+  useEffect(()=>{
+   getGroups(userId).then((data)=>{
+      setGroups(data);
+   }).catch(()=>{
+        console.error("Error fetching tasks:", err);
+   })
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -29,6 +39,11 @@ function NotToDoForm({ addTask }) {
          <option value="MEDIUM">MEDIUM</option>
          <option value="HIGH">HIGH</option>
        </select>
+       <Select>
+       {groups.map(group => {
+          <option>{group}</option>
+       })}
+       </Select>
        <input
         type="text"
         placeholder="Group name"
