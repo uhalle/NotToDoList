@@ -1,29 +1,47 @@
 const TASKS_URL = "http://localhost:8080/tasks/byUserAndGroup";
 const BASE_URL = "http://localhost:8080/tasks";
-const GROUPS_URL = "http://localhost:8080/groups";
+const GROUPS_URL = "http://localhost:8080/tasks/groups";
 
 // Fetch all tasks
 export async function getTasks(userId) {
-  const TASKS_FINAL_URL = `${TASKS_URL}/${userId}/${1}`;
+  const TASKS_FINAL_URL = `${BASE_URL}/${userId}`;
   const res = await fetch(TASKS_FINAL_URL);
+  if (!res.ok) {
+    const errorText = await res.text();
+    throw new Error(
+      `Failed to fetch tasks: ${res.status} ${res.statusText} - ${errorText}`
+    );
+  }
   return res.json();
 }
 
 export async function getGroups(userId) {
   const GROUPS_FINAL_URL = `${GROUPS_URL}/${userId}`;
   const res = await fetch(GROUPS_FINAL_URL);
+  if (!res.ok) {
+    const errorText = await res.text();
+    throw new Error(
+      `Failed to fetch tasks: ${res.status} ${res.statusText} - ${errorText}`
+    );
+  }
   return res.json();
 }
 
 // Create a new task
-export async function createTask({description, priority, userId}) {
+export async function createTask({description, priority, userId, gdescription,selectedGroup }) {
   const user = {id : userId};
-  const group = {id : 1};
+  const group = {name : gdescription};
   const res = await fetch(BASE_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({description, priority, user, group})
   });
+  if (!res.ok) {
+    const errorText = await res.text();
+    throw new Error(
+      `Failed to fetch tasks: ${res.status} ${res.statusText} - ${errorText}`
+    );
+  }
   return res.json();
 }
 

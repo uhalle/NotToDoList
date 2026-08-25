@@ -8,12 +8,12 @@ const NotToDoListHistory = ({description, priority, userId}) => {
   useEffect(() => {
     getTasks(userId)
       .then(data => {
-        setNotToDoItems([...data, { description, priority }]);     
+        setNotToDoItems(data);     
        })
-      .catch(err => {
-        console.error("Error fetching tasks:", err);
+      .catch(err1 => {
+        console.error("Error fetching tasks:", err1);
       });
-  }, [description, priority]); // empty dependency array = run once on mount
+  }, [userId]); // empty dependency array = run once on mount
 
   
   return(<div>
@@ -28,14 +28,15 @@ const NotToDoListHistory = ({description, priority, userId}) => {
           </tr>
         </thead>
         <tbody>
-          {notToDoItems.map((item) => (
+          {notToDoItems?.map((item) => (
             <tr key={item.id}>
               <td>{item.id}</td>
               <td>{item.description}</td>
               <td>{item.priority}</td>
-              <td>{item.group.name}</td>
+              <td>{item.group?.name}</td>
             </tr>
-          ))}
+          ))
+          }
         </tbody>
       </table>
     </div>)

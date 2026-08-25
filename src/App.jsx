@@ -18,10 +18,10 @@ function App() {
     setUser(userData); // set user info after successful login
   };
 
-  const addTask = ({description, priority}) => {
+  const addTask = ({description, priority, gdescription,selectedGroup}) => {
     const task = {}
     const userId = user.userId;
-    createTask({ description, priority, userId})
+    createTask({ description, priority, userId,gdescription,selectedGroup})
       .then(newTask => {
         setDescription(newTask.description);
         setPriority(newTask.priority);
@@ -48,7 +48,7 @@ function App() {
       {!user ? ( <div><Login onLogin={handleLogin}/> <SignupPage/> </div>) :
       (<div>
         <NotToDoListHistory description={description} priority={priority} userId={user.userId}/>
-      <h1 style={{display : 'flex',justifyContent : 'left'}}>🚫 Not To Do List</h1>
+      <h1 style={{display : 'flex',justifyContent : 'center'}}>🚫 Not To Do</h1>
       <NotToDoForm addTask={addTask} userId={user.userId}/>
       </div>)}      
     </div>);

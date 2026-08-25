@@ -12,7 +12,7 @@ function NotToDoForm({ addTask, userId }) {
   useEffect(()=>{
    getGroups(userId).then((data)=>{
       setGroups(data);
-   }).catch(()=>{
+   }).catch((err)=>{
         console.error("Error fetching groups:", err);
    })
   }, []);
@@ -20,13 +20,13 @@ function NotToDoForm({ addTask, userId }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!description.trim()) return;
-    addTask({description,priority}); 
+    addTask({description,priority,gdescription,selectedGroup}); 
     setDescription(" ");
     setPriority("Low")
   };
 
   return (
-  <div style={{ display : "flex", justifyContent : "left", minHeight : "100vh", margin : "100 px"}}>
+  <div style={{ display : "flex", justifyContent : "center", minHeight : "100vh", margin : "100 px"}}>
     <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "15px", maxWidth: "400px" }}>
       <input
         type="text"
@@ -56,7 +56,7 @@ function NotToDoForm({ addTask, userId }) {
 
       <input
         type="text"
-        placeholder="Only for new group"
+        placeholder="Enter if new group"
         value={gdescription}
         onChange={e => setGDescription(e.target.value)}
         style={{ padding: "8px", width: "100%" }}
