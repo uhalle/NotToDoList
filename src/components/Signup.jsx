@@ -51,16 +51,39 @@ export default function SignupPage(onSignup) {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center">Sign Up</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center"               
+        style={{ padding : "8px",gap: "10px", marginTop:"20px"}} >Sign Up</h2>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
+<form
+  onSubmit={handleSubmit}
+  style={{
+    display: "flex",
+    flexDirection: "column",
+    gap: "20px"
+  }}
+>         
+<div>
+            <input
+              type="text"
+              name="name"
+              placeholder="UserName"
+              value={formData.name}
+              onChange={handleChange}ß
+              style={{ width: "35%",padding : "4px"}} 
+              className="w-full px-4 py-2 border rounded-lg"
+            />
+            {errors.name && (
+              <p className="text-red-500 text-sm">{errors.name}</p>
+            )}
+          </div>
+ <div>
             <input
               type="text"
               name="name"
               placeholder="Full Name"
               value={formData.name}
-              onChange={handleChange}
+              onChange={handleChange}ß
+              style={{ width: "35%",padding : "4px"}} 
               className="w-full px-4 py-2 border rounded-lg"
             />
             {errors.name && (
@@ -75,6 +98,7 @@ export default function SignupPage(onSignup) {
               placeholder="Email"
               value={formData.email}
               onChange={handleChange}
+              style={{ width: "35%",padding : "4px"}} 
               className="w-full px-4 py-2 border rounded-lg"
             />
             {errors.email && (
@@ -89,7 +113,8 @@ export default function SignupPage(onSignup) {
               placeholder="Password"
               value={formData.password}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg"
+              style={{ width: "35%",padding : "4px",gap: "30px"}} 
+               className="w-full px-4 py-2 border rounded-lg"
             />
             {errors.password && (
               <p className="text-red-500 text-sm">{errors.password}</p>
@@ -103,6 +128,8 @@ export default function SignupPage(onSignup) {
               placeholder="Confirm Password"
               value={formData.confirmPassword}
               onChange={handleChange}
+              style={{ width: "35%",padding : "4px"
+               }}
               className="w-full px-4 py-2 border rounded-lg"
             />
             {errors.confirmPassword && (
@@ -113,7 +140,8 @@ export default function SignupPage(onSignup) {
           </div>
 
           <button
-            type="submit"
+            type="submit" 
+            style={{alignSelf: "center"}}
             className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
           >
             Create Account

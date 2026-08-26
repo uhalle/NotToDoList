@@ -18,7 +18,7 @@ const NotToDoListHistory = ({description, priority, userId}) => {
   
   return(<div>
       <h2>Not-To-Do List</h2>
-      <table border="1" cellPadding="8" style={{ borderCollapse: "collapse", width: "100%" }}>
+      <table border="1" cellPadding="8" style={{ borderCollapse: "collapse", width: "100%", marginBottom:"20px"}}>
         <thead>
           <tr>
             <th>ID</th>

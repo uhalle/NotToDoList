@@ -44,14 +44,29 @@ function App() {
   };
   
   return (
-    <div>
-      {!user ? ( <div><Login onLogin={handleLogin}/> <SignupPage/> </div>) :
-      (<div>
-        <NotToDoListHistory description={description} priority={priority} userId={user.userId}/>
-      <h1 style={{display : 'flex',justifyContent : 'center'}}>🚫 Not To Do</h1>
-      <NotToDoForm addTask={addTask} userId={user.userId}/>
-      </div>)}      
-    </div>);
+    <div className="app-container">
+  {!user ? (
+    <div className="auth-container">
+      <Login onLogin={handleLogin} />
+      <SignupPage />
+    </div>
+  ) : (
+    <div className="dashboard-container">
+      <NotToDoListHistory
+        description={description}
+        priority={priority}
+        userId={user.userId}
+      />
+
+      <h2 className="not-todo-title" >🚫 Add Not ToDo</h2>
+
+      <NotToDoForm
+        addTask={addTask}
+        userId={user.userId}
+      />
+    </div>
+  )}
+</div>);
 }
 
 export default App;
