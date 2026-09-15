@@ -9,6 +9,8 @@ function App() {
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState("LOW");
   const [user, setUser] = useState(null);
+  const [group,setGroup] = useState(null);
+  const [task,setTask] = useState(null);
   //  // Load tasks on mount
   // useEffect(() => {
   //   getTasks.then(setTasks);
@@ -19,12 +21,10 @@ function App() {
   };
 
   const addTask = ({description, priority, gdescription,selectedGroup}) => {
-    const task = {}
     const userId = user.userId;
     createTask({ description, priority, userId,gdescription,selectedGroup})
-      .then(newTask => {
-        setDescription(newTask.description);
-        setPriority(newTask.priority);
+      .then(newTask => {  
+        setTask(newTask);
       });
   };
 
@@ -42,6 +42,10 @@ function App() {
       setTasks(tasks.filter(t => t.id !== id));
     });
   };
+
+  // const onTaskNewlyAdded = (task) => {
+  //   setTask(task);
+  // };
   
   return (
     <div className="app-container">
@@ -53,9 +57,8 @@ function App() {
   ) : (
     <div className="dashboard-container">
       <NotToDoListHistory
-        description={description}
-        priority={priority}
         userId={user.userId}
+        newTask = {task}
       />
 
       <h2 className="not-todo-title" >🚫 Add Not ToDo</h2>

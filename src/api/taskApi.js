@@ -1,6 +1,8 @@
-const TASKS_URL = "http://localhost:8080/tasks/byUserAndGroup";
-const BASE_URL = "http://localhost:8080/tasks";
-const GROUPS_URL = "http://localhost:8080/tasks/groups";
+const API_BASE_URL = "http://localhost:8080";
+
+const TASKS_URL = `${API_BASE_URL}/tasks/byUserAndGroup`;
+const BASE_URL = `${API_BASE_URL}/tasks`;
+const GROUPS_URL = `${API_BASE_URL}/tasks/groups`;
 
 // Fetch all tasks
 export async function getTasks(userId) {
@@ -30,7 +32,7 @@ export async function getGroups(userId) {
 // Create a new task
 export async function createTask({description, priority, userId, gdescription,selectedGroup }) {
   const user = {id : userId};
-  const group = {name : gdescription};
+  const group = gdescription ? {name : gdescription} : {name:selectedGroup}
   const res = await fetch(BASE_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

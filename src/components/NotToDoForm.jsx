@@ -17,14 +17,35 @@ function NotToDoForm({ addTask, userId }) {
       .then((data) => {
         setGroups(data);
 
-        if (data.length > 0) {
-          setSelectedGroup(data[0].name || data[0]);
-        }
+        // Don't automatically select a group.
+        setSelectedGroup("");
       })
       .catch((err) => {
         console.error("Error fetching groups:", err);
       });
   }, [userId]);
+
+  // When existing group is selected
+  const handleExistingGroupChange = (e) => {
+    const value = e.target.value;
+
+    setSelectedGroup(value);
+
+    // Clear new group
+    setGDescription("");
+  };
+
+  // When user types a new group
+  const handleNewGroupChange = (e) => {
+    const value = e.target.value;
+
+    setGDescription(value);
+
+    // Clear existing group
+    if (value.trim() !== "") {
+      setSelectedGroup("");
+    }
+  };
 
   const handleAISuggest = async () => {
     if (!description.trim()) {
@@ -37,7 +58,7 @@ function NotToDoForm({ addTask, userId }) {
     setAiReason("");
 
     try {
-      const response = await fetch("http://localhost:8080/api/ai/suggest", {
+      const response = await fetch("/api/ai/suggest", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -56,20 +77,25 @@ function NotToDoForm({ addTask, userId }) {
       setPriority(data.priority);
       setAiReason(data.reason);
 
-      // If AI suggests a group that already exists,
-      // select that group.
+      // Check whether AI suggested an existing group
       const matchingGroup = groups.find(
         (group) =>
-          (group.name || group).toLowerCase() ===
-          data.group.toLowerCase()
+          group.name?.toLowerCase() ===
+          data.group?.toLowerCase()
       );
 
       if (matchingGroup) {
-        setSelectedGroup(matchingGroup.name || matchingGroup);
+        // Existing group selected
+        setSelectedGroup(matchingGroup.name);
+
+        // Clear new group
+        setGDescription("");
       } else {
-        // If it doesn't exist, put AI suggestion
-        // into the new group field.
-        setGDescription(data.group);
+        // New group selected
+        setGDescription(data.group || "");
+
+        // Clear existing group
+        setSelectedGroup("");
       }
     } catch (error) {
       console.error("AI suggestion error:", error);
@@ -86,6 +112,12 @@ function NotToDoForm({ addTask, userId }) {
       return;
     }
 
+    // Make sure a group is selected
+    if (!selectedGroup && !gdescription.trim()) {
+      alert("Please select an existing group or enter a new group.");
+      return;
+    }
+
     addTask({
       description,
       priority,
@@ -93,8 +125,11 @@ function NotToDoForm({ addTask, userId }) {
       selectedGroup,
     });
 
+    // Reset form
     setDescription("");
     setPriority("LOW");
+    setSelectedGroup("");
+    setGDescription("");
     setAiReason("");
     setAiError("");
   };
@@ -114,7 +149,7 @@ function NotToDoForm({ addTask, userId }) {
           flexDirection: "column",
           gap: "15px",
           maxWidth: "400px",
-          width: "100%"
+          width: "100%",
         }}
       >
         <input
@@ -122,7 +157,10 @@ function NotToDoForm({ addTask, userId }) {
           placeholder="Task description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          style={{ padding: "8px", width: "100%" }}
+          style={{
+            padding: "8px",
+            width: "100%",
+          }}
         />
 
         <button
@@ -152,46 +190,74 @@ function NotToDoForm({ addTask, userId }) {
             }}
           >
             <strong>AI Suggestion:</strong>
-            <p style={{ marginBottom: 0 }}>{aiReason}</p>
+            <p style={{ marginBottom: 0 }}>
+              {aiReason}
+            </p>
           </div>
         )}
 
         <select
           value={priority}
           onChange={(e) => setPriority(e.target.value)}
-          style={{ padding: "8px", width: "100%" }}
+          style={{
+            padding: "8px",
+            width: "100%",
+          }}
         >
           <option value="LOW">LOW</option>
           <option value="MEDIUM">MEDIUM</option>
           <option value="HIGH">HIGH</option>
         </select>
 
+        {/* Existing Group */}
         <select
           value={selectedGroup}
-          onChange={(e) => setSelectedGroup(e.target.value)}
-          style={{ padding: "8px", width: "100%" }}
+          onChange={handleExistingGroupChange}
+          disabled={gdescription.trim() !== ""}
+          style={{
+            padding: "8px",
+            width: "100%",
+          }}
         >
-          {groups.map((group) => (
-            <option
-              key={group.id || group}
-              value={group.name || group}
-            >
-              {group.name || group}
-            </option>
-          ))}
+          <option value="">
+            Existing Group
+          </option>
+
+          {groups
+            .filter(
+              (group) =>
+                group.name &&
+                group.name.trim() !== ""
+            )
+            .map((group) => (
+              <option
+                key={group.id}
+                value={group.name}
+              >
+                {group.name}
+              </option>
+            ))}
         </select>
 
+        {/* New Group */}
         <input
           type="text"
           placeholder="Enter if new group"
           value={gdescription}
-          onChange={(e) => setGDescription(e.target.value)}
-          style={{ padding: "8px", width: "100%" }}
+          onChange={handleNewGroupChange}
+          disabled={selectedGroup !== ""}
+          style={{
+            padding: "8px",
+            width: "100%",
+          }}
         />
 
         <button
           type="submit"
-          style={{ padding: "10px", width: "100%" }}
+          style={{
+            padding: "10px",
+            width: "100%",
+          }}
         >
           Add Task
         </button>
